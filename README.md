@@ -1,11 +1,13 @@
 <!-- 
 SPDX-FileCopyrightText: 2022 Sidings Media <contact@sidingsmedia.com>
+SPDX-FileCopyrightText: 2023 Matthew Nickson <mnickson@sidingsmedia.com>
 SPDX-License-Identifier: MIT
 -->
 
-# Project name
+# Traceroute
 
-A description of what this project is and what it does
+An implementation of traceroute using ICMP packets in C++. This project
+was originally for my Siver DofE.
 
 ## Licence
 This repo uses the [REUSE](https://reuse.software) standard in order to
