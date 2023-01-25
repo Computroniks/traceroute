@@ -33,7 +33,6 @@
 *.exe
 *.out
 *.app
-traceroute
 
 # Build systems
 CMakeLists.txt.user
