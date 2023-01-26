@@ -17,15 +17,18 @@ Config::Config(int argc, char* argv[]) {
 void Config::ParseCLI(int argc, char* argv[]) {
 
     // Options
-    po::options_description opt_desc("Usage: traceroute [options] [host] ...\nOptions");
+    po::options_description opt_desc("Usage: traceroute [options] [source] [dest] ...\nOptions");
     opt_desc.add_options()
         ("help", "Show this help message")
-        ("host", po::value<std::string>()->required(), "Host to trace route to")
+        ("source", po::value<std::string>()->required(), "Source address")
+        ("dest", po::value<std::string>()->required(), "Host to trace route to")
         ;
 
     // Positional argumetns
     po::positional_options_description pos_desc;
-    pos_desc.add("host", -1);
+    pos_desc.add("source", 1);
+    pos_desc.add("dest", 2);
+
 
     po::variables_map vm;
 
@@ -47,5 +50,6 @@ void Config::ParseCLI(int argc, char* argv[]) {
         exit(1);
     }
 
-    host = vm["host"].as<std::string>();
+    source = vm["source"].as<std::string>();
+    dest = vm["dest"].as<std::string>();
 }

@@ -9,9 +9,11 @@
 class Config {
 private:
     void ParseCLI(int argc, char* argv[]);
+    static std::string GetSourceAddr();
 
 public:
-    std::string host;
+    std::string source;
+    std::string dest;
     Config(int argc, char* argv[]);
 };
 

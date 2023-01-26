@@ -8,6 +8,7 @@
 
 int main(int argc, char* argv[]) {
     Config config(argc, argv);
-    std::cout << config.host << "\n";
+    std::cout << config.source << "\n";
+    std::cout << config.dest << "\n";
     return 0;
 }
