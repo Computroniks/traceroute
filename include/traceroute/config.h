@@ -6,14 +6,13 @@
 #ifndef TRACEROUTE_CONFIG_H_
 #define TRACEROUTE_CONFIG_H_
 
-class Config
-{
+class Config {
 private:
-    void parseCLI(int argc, char *argv[]);
+    void ParseCLI(int argc, char* argv[]);
 
 public:
     std::string host;
-    Config(int argc, char *argv[]);
+    Config(int argc, char* argv[]);
 };
 
 #endif

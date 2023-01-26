@@ -4,10 +4,9 @@
 #include <iostream>
 #include <string>
 
-#include "traceroute/Config.h"
+#include "traceroute/config.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char* argv[]) {
     Config config(argc, argv);
     std::cout << config.host << "\n";
     return 0;

@@ -10,7 +10,7 @@ add_executable(traceroute)
 target_sources(
     traceroute PRIVATE 
     src/main.cc
-    src/Config.cc
+    src/config.cc
 )
 
 target_include_directories(traceroute PUBLIC include/)
