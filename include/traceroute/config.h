@@ -12,7 +12,6 @@ private:
     static std::string GetSourceAddr();
 
 public:
-    std::string source;
     std::string dest;
     Config(int argc, char* argv[]);
 };

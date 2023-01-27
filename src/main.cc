@@ -5,10 +5,13 @@
 #include <string>
 
 #include "traceroute/config.h"
+#include "traceroute/trace.h"
 
 int main(int argc, char* argv[]) {
     Config config(argc, argv);
-    std::cout << config.source << "\n";
     std::cout << config.dest << "\n";
+
+    Trace route(config.dest, 60);
+    route.Start();
     return 0;
 }

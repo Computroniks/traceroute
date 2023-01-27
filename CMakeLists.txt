@@ -11,6 +11,7 @@ target_sources(
     traceroute PRIVATE 
     src/main.cc
     src/config.cc
+    src/trace.cc
 )
 
 target_include_directories(traceroute PUBLIC include/)
