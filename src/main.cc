@@ -9,8 +9,6 @@
 
 int main(int argc, char* argv[]) {
     Config config(argc, argv);
-    std::cout << config.dest << "\n";
-
     Trace route(config.dest, 60);
     route.Start();
     return 0;

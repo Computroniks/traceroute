@@ -27,11 +27,13 @@ void Trace::Start() {
 
     while (ttl_ <= max_hops_) {
         SendProbe();
-        /* Call recieve result */
+        Response res = RecieveProbe();
 
-        //if (/* packet is ECHO REPLY */) {
-            //break;
-        //}
+        std::cout << ttl_ << " " << res.ip << "\n";
+
+        if (res.is_target) {
+            break;
+        }
 
         IncrementTTL();
     }
@@ -49,15 +51,6 @@ int Trace::ConfigureSocket() {
     // Set initial TTL value
     if (setsockopt(sock, IPPROTO_IP, IP_TTL, &ttl_, sizeof(ttl_)) < 0) {
         std::cout << "Failed to set initial TTL. ERRNO: " << errno << "\n";
-        close(sock);
-        FatalErr();
-    }
-
-    int one = 1;
-
-    // Configure handling of ICMP error packets
-    if (setsockopt(sock, IPPROTO_IP, IP_RECVERR, &one, sizeof(one)) < 0) {
-        std::cout << "Failed to set IP_RECVERR flag. ERRNO: " << errno << "\n";
         close(sock);
         FatalErr();
     }
@@ -99,6 +92,40 @@ uint32_t Trace::CalcChecksum(const uint16_t* buf, unsigned int len) {
     }
 
     return ~sum;
+}
+
+Response Trace::RecieveProbe() {
+    char msg_buf[512];
+    std::memset(&msg_buf, 0, sizeof(msg_buf));
+
+    cmsghdr ctrl_buf;
+    iovec iov[1];
+    std::memset(&iov, 0, sizeof(iov));
+    iov[0].iov_base = msg_buf;
+    iov[0].iov_len = sizeof(msg_buf);
+
+    msghdr msg;
+    msg.msg_name = NULL;
+    msg.msg_control = &ctrl_buf;
+    msg.msg_controllen = sizeof(ctrl_buf);
+    msg.msg_iov = iov;
+    msg.msg_iovlen = 1;
+
+    Response res;
+
+    int nbytes = recvmsg(sock_, &msg, 0);
+    if (nbytes < 0) {
+        std::cout << "Failed to get response. ERRNO: " << errno << "\n";
+        FatalErr();
+    }
+
+    iphdr* ip_header = (iphdr*)msg_buf;
+    icmphdr* icmp_header = (icmphdr*)(msg_buf + (ip_header->ihl << 2));
+
+    res.ip = IPToString(ip_header->saddr);
+    res.is_target = icmp_header->type == ICMP_ECHOREPLY;
+
+    return res;
 }
 
 void Trace::IncrementTTL() {
@@ -148,4 +175,11 @@ void Trace::FatalErr() {
     std::cout << "Encountered unrecoverable error. Exiting. ERRNO: " << errno << "\n";
     close(sock_);
     exit(1);
+}
+
+std::string Trace::IPToString(int addr) {
+    char ip[32];
+    inet_ntop(AF_INET, &addr, ip, sizeof(ip));
+    std::string result = ip;
+    return result;
 }
